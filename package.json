@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "cypress": "^15.2.0",
+    "cypress-recurse": "^1.37.1",
+    "cypress-wait-until": "^3.0.2"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "typescript": "^5.9.2"
+  }
+}
