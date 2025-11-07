@@ -1,11 +1,11 @@
-import { BaseElement } from '../base/element.base';
-import { BasePage } from '../base/page.base';
-import { TB } from '../elements/textbox.element';
-import { CB } from '../elements/checkbox.element';
-import { Toggle } from '../elements/toggle.element';
-import { Dropdown, StaticDropdown } from '../elements/dropdown.element';
-import { recurse } from 'cypress-recurse';
-import { isEqual } from 'lodash';
+import { BaseElement } from "../base/element.base";
+import { BasePage } from "../base/page.base";
+import { TB } from "../elements/textbox.element";
+import { CB } from "../elements/checkbox.element";
+import { Toggle } from "../elements/toggle.element";
+import { Dropdown, StaticDropdown } from "../elements/dropdown.element";
+import { recurse } from "cypress-recurse";
+import { isEqual } from "lodash";
 
 export default abstract class GenericPageWithLogger extends BasePage {
   constructor(pageName: string, urlPattern?: RegExp) {
@@ -14,7 +14,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected clickOnElement(
     elementToClick: BaseElement,
-    options: object | null = null,
+    options: object | null = null
   ) {
     this.logger.step(`Clicking on the [${elementToClick.entityName}]`);
     elementToClick.click(options);
@@ -35,10 +35,10 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementContainsText(
     element: BaseElement,
-    expectedText: string,
+    expectedText: string
   ) {
     this.logger.step(
-      `Checking that the [${element.entityName}] contains text [${expectedText}]`,
+      `Checking that the [${element.entityName}] contains text [${expectedText}]`
     );
     element.assertContainsText(expectedText);
     return this;
@@ -46,10 +46,10 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementNotContainsText(
     element: BaseElement,
-    expectedText: string,
+    expectedText: string
   ) {
     this.logger.step(
-      `Checking that the [${element.entityName} does not contain text [${expectedText}]`,
+      `Checking that the [${element.entityName} does not contain text [${expectedText}]`
     );
     element.assertNotContainsText(expectedText);
     return this;
@@ -58,10 +58,10 @@ export default abstract class GenericPageWithLogger extends BasePage {
   protected verifyElementTextIsVisible(
     element: BaseElement,
     expectedText: string,
-    matchCase?,
+    matchCase?
   ) {
     this.logger.step(
-      `Checking that the [${element.entityName}] shows text [${expectedText}]`,
+      `Checking that the [${element.entityName}] shows text [${expectedText}]`
     );
     element.getInstance().scrollIntoView();
     element.assertTextIsVisible(expectedText, matchCase);
@@ -70,7 +70,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementHasText(element: BaseElement, expectedValue: string) {
     this.logger.step(
-      `Verifying if the [${element.entityName}] has text [${expectedValue}]`,
+      `Verifying if the [${element.entityName}] has text [${expectedValue}]`
     );
     element.assertHasText(expectedValue);
     return this;
@@ -78,7 +78,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementHasValue(element: BaseElement, expectedValue: string) {
     this.logger.step(
-      `Verifying if the [${element.entityName}] has value [${expectedValue}]`,
+      `Verifying if the [${element.entityName}] has value [${expectedValue}]`
     );
     element.assertHasValue(expectedValue);
     return this;
@@ -92,7 +92,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyToggleSetToTrue(element: Toggle) {
     this.logger.step(
-      `Verifying that the [${element.entityName}] is set to true`,
+      `Verifying that the [${element.entityName}] is set to true`
     );
     element.assertToggleSetToTrue();
     return this;
@@ -100,7 +100,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyToggleSetToFalse(element: Toggle) {
     this.logger.step(
-      `Verifying that the [${element.entityName}] is set to false`,
+      `Verifying that the [${element.entityName}] is set to false`
     );
     element.assertToggleSetToFalse();
     return this;
@@ -114,7 +114,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementDoesNotExist(element: BaseElement) {
     this.logger.step(
-      `Verifying that the [${element.entityName}] does not exist`,
+      `Verifying that the [${element.entityName}] does not exist`
     );
     element.assertDoesNotExist();
     return this;
@@ -128,7 +128,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementNotVisible(element: BaseElement) {
     this.logger.step(
-      `Checking that the [${element.entityName}] is not visible`,
+      `Checking that the [${element.entityName}] is not visible`
     );
     element.assertNotVisible();
     return this;
@@ -158,19 +158,19 @@ export default abstract class GenericPageWithLogger extends BasePage {
       .clear()
       .type(text)
       .then((element) => {
-        if (!isEqual(element.attr('value'), text)) {
+        if (!isEqual(element.attr("value"), text)) {
           recurse(
             () => {
               this.reloadPage();
               return field.clear().type(text);
             },
             (result) => {
-              return isEqual(result.attr('value'), text);
+              return isEqual(result.attr("value"), text);
             },
             {
               delay: 1000,
               timeout: 5000,
-            },
+            }
           );
         } else {
           return this;
@@ -197,7 +197,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
             {
               delay: 1000,
               timeout: 5000,
-            },
+            }
           );
         } else {
           return this;
@@ -209,14 +209,14 @@ export default abstract class GenericPageWithLogger extends BasePage {
   protected clearTextBoxFieldWithRecursion(field: TB) {
     this.logger.step(`Clearing the [${field.entityName}] field`);
     field.clear().then((element) => {
-      if (!isEqual(element.text(), '')) {
+      if (!isEqual(element.text(), "")) {
         recurse(
           () => field.click().clear(),
           (result) => isEqual(result.text().length, 1),
           {
             delay: 1000,
             timeout: 5000,
-          },
+          }
         );
       } else {
         return this;
@@ -241,10 +241,16 @@ export default abstract class GenericPageWithLogger extends BasePage {
     element: StaticDropdown,
     text: string,
     matchCase = { matchCase: true },
-    forceClick = { force: true },
+    forceClick = { force: true }
   ) {
     this.logger.step(`Selecting ${text} option`);
     element.select(text, matchCase, forceClick);
+    return this;
+  }
+
+  protected selectOptionByText(element: StaticDropdown, text: string) {
+    this.logger.step(`Selecting ${text} option`);
+    element.getInstance().select(text);
     return this;
   }
 
@@ -262,10 +268,10 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyDropdownSelectedValue(
     dropdown: Dropdown,
-    expectedText: string,
+    expectedText: string
   ) {
     this.logger.step(
-      `Verifying if the [${dropdown.entityName}] has text: [${expectedText}]`,
+      `Verifying if the [${dropdown.entityName}] has text: [${expectedText}]`
     );
     dropdown.getInputBarInstance().then((inputBarElement) => {
       expect(inputBarElement.text()).to.be.eq(expectedText);
@@ -276,10 +282,10 @@ export default abstract class GenericPageWithLogger extends BasePage {
   protected verifyAttributeEqualsValue(
     field: TB,
     attribute: string,
-    expectedText: string,
+    expectedText: string
   ) {
     this.logger.step(
-      `Checking the [${field.entityName}] attribute of [${attribute}] has a value of '[${expectedText}]`,
+      `Checking the [${field.entityName}] attribute of [${attribute}] has a value of '[${expectedText}]`
     );
     field.assertAttributeEqualsValue(attribute, expectedText);
     return this;
@@ -287,7 +293,7 @@ export default abstract class GenericPageWithLogger extends BasePage {
 
   protected verifyElementHasAttribute(field: TB, expectedAttribute: string) {
     this.logger.step(
-      `Checking the [${field.entityName}] has an attribute of [${expectedAttribute}]`,
+      `Checking the [${field.entityName}] has an attribute of [${expectedAttribute}]`
     );
     field.assertElementHasAttribute(expectedAttribute);
     return this;
